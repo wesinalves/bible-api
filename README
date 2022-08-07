@@ -1,0 +1,17 @@
+# Comandos docker utilizados
+
+```cmd
+nice -20 docker build --compress --force-rm -f Dockerfile -t biblia:1.0 . 
+```
+
+```cmd
+docker run -it --rm --name abiblia -p 8000:8000 -v "$PWD":/code -d biblia:1.0
+```
+
+```cmd
+docker exec -ti abiblia python biblia/manage.py startapp webapp
+```
+
+```cmd
+docker-compose exec web python manage.py COMMAND
+```
