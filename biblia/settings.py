@@ -28,6 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 DEBUG = True
 
 ALLOWED_HOSTS = ['https://warm-lake-57978.herokuapp.com']
+CSRF_TRUSTED_ORIGINS = ['warm-lake-57978.herokuapp.com']
 
 
 # Application definition
@@ -157,7 +158,6 @@ REST_FRAMEWORK = {
 #     STATICFILES_DIRS = (
 #         os.path.join(BASE_DIR, 'static')
 #     )
-
 
 
 django_heroku.settings(locals())
