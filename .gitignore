@@ -1,1 +1,3 @@
 *.pyc
+biblia/settings.py
+.env
