@@ -6,4 +6,6 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('versions', views.versions, name='versions'),
     path('books', views.books, name='books'),
+    path('<str:version_abbr>/<str:book_abbr>', views.chapters, name='chapters'),
+    path('<str:version_abbr>/<str:book_abbr>/<int:chapter_number>', views.verses, name='verses'),
 ]
