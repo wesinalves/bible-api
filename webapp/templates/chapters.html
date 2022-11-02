@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  
+    <main class="px-3">
+        <h1>Escolha um capítulo do livro {{ book.name }}</h1>
+        
+        {% for chapter in range %}
+            <a class="btn btn-success mb-1" href={% url 'verses' 'acf' book.abbreviation chapter %} role="button">{{ chapter }}</a>
+        {% endfor %}
+        
+      
+      
+      
+    </main>   
+    
+
+{% endblock content %}
