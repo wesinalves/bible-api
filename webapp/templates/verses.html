@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  
+    <main class="px-3">
+        <h1>Capítulo {{chapter_number}} de {{ book.name }}</h1>
+        {% for verse in verses %}
+            <div class="d-flex align-items-baseline">
+                <span class="badge bg-success">{{ forloop.counter }}</span>
+                <p class='lead'>{{ verse.text }}</p>
+            </div>
+        {% endfor%}
+      
+            
+    </main>   
+    
+
+{% endblock content %}
