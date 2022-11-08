@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+  
+    <main class="px-3">
+        <div class="row">
+            <div class="col-8">
+                <h1>{{ book.name }} {{ chapter_number }}: {{ verse.verse.number }}</h1>                
+                <div class="d-flex align-items-baseline">
+                    <sup class='fw-lighter'>{{ forloop.counter }}</sup>
+                    <p class='lead'>{{ verse.text }}</p>                                  
+                </div>
+                <h3>Referências</h3>
+                <h3>Dicionário</h3>
+                <h3>Interlinear</h3>
+                
+            </div>
+            <div class="col-4">
+                <h3>Quer receber mensagens bíblicas?</h3>                
+            </div>
+        </div>
+      
+            
+    </main>      
+
+    
+{% endblock content %}

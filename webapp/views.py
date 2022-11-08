@@ -44,15 +44,13 @@ def books(request):
 def chapters(request, version_abbr, book_abbr):
     """View function for chapters page of site."""
 
-    version = request.session.get('version', 'acf')
     book = Book.objects.get(        
         abbreviation=book_abbr
     )
     context = {
         'book': book,
         'range': range(1, book.chapters + 1),
-        'version_abbr': version_abbr,
-        'version': version,
+        'version': version_abbr,        
     }
 
     return render(request, 'chapters.html', context=context)
@@ -61,7 +59,6 @@ def chapters(request, version_abbr, book_abbr):
 def verses(request, version_abbr, book_abbr, chapter_number):
     """View funciont to get verses."""
 
-    version = request.session.get('version', 'acf')
     verses = VerseVersion.objects.filter(
         version__abbreviation__iexact=version_abbr,
         verse__book__abbreviation__iexact=book_abbr,
@@ -71,12 +68,33 @@ def verses(request, version_abbr, book_abbr, chapter_number):
     books = Book.objects.all()
     context = {
         'verses': verses,
-        'version_abbr': version_abbr,
+        'version': version_abbr,
         'book': book,
         'books': books,
         'chapter_number': chapter_number,
-        'range_chapters': range(1, book.chapters + 1),
-        'version': version,
+        'range_chapters': range(1, book.chapters + 1),        
     }
 
     return render(request, 'verses.html', context=context)
+
+def verse(request, version_abbr, book_abbr, chapter_number, verse_number):
+    """View funciont to get verses."""
+
+    verse = VerseVersion.objects.filter(
+        version__abbreviation__iexact=version_abbr,
+        verse__book__abbreviation__iexact=book_abbr,
+        verse__chapter__number=chapter_number,
+        verse__number=verse_number
+    )
+    book = Book.objects.get(abbreviation=book_abbr)
+    books = Book.objects.all()
+    context = {
+        'verse': verse[0],
+        'version': version_abbr,
+        'book': book,
+        'books': books,
+        'chapter_number': chapter_number,
+        'range_chapters': range(1, book.chapters + 1),        
+    }
+
+    return render(request, 'verse.html', context=context)
