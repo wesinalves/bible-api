@@ -3,6 +3,14 @@
 {% block content %}
   
     <main class="px-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+              <li class="breadcrumb-item" aria-current="page"><a href="{% url 'books' %}">Livro</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Capítulos</li>
+            </ol>
+        </nav>
+
         <h1>Escolha um capítulo do livro {{ book.name }}</h1>
         
         {% for chapter in range %}

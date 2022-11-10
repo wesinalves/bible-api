@@ -1,8 +1,16 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  
+
+     
     <main class="px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Livro</li>
+          </ol>
+        </nav>
+
         <h1>Escolha um livro</h1>    
         
         <ol class="list-group list-group-numbered ">

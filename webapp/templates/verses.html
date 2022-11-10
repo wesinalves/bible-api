@@ -4,6 +4,14 @@
 {% block content %}
   
     <main class="px-3">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+              <li class="breadcrumb-item" aria-current="page"><a href="{% url 'books' %}">Livro</a></li>
+              <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'chapters' version book.abbreviation %}">Capítulos</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Versículos</li>
+            </ol>
+        </nav>
         <div class="row">
             <div class="col-8">
                 <h1>Capítulo {{chapter_number}} de {{ book.name }}</h1>
