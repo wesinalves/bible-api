@@ -13,10 +13,10 @@ def index(request):
 def versions(request, version_abbr='acf'):
     """View function for version page of site."""    
 
+    request.session['version'] = version_abbr
     changed = False
     if request.session['version'] != version_abbr:
         changed = True
-    request.session['version'] = version_abbr
     version = request.session['version']
     versions = Version.objects.order_by('name')
     context = {
