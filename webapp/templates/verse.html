@@ -14,15 +14,30 @@
             </ol>
         </nav>
         <div class="row">
-            <div class="col-8">
+            <div class="col-8">                 
                 <h1>{{ book.name }} {{ chapter_number }}: {{ verse.verse.number }}</h1>                
                 <div class="d-flex align-items-baseline">
                     <sup class='fw-lighter'>{{ forloop.counter }}</sup>
                     <p class='lead'>{{ verse.text }}</p>                                  
                 </div>
-                <h3>Referências</h3>
+                <h3>Referências</h3>                
+                {% for reference in references %}
+                    <a>{{ reference.text }}</a>
+                {% endfor %}
                 <h3>Dicionário</h3>
+                {% for dictionary in dictionaries %}
+                    <p class="lead">{{dictionary.title}} - {{dictionary.text}}</p>
+                {% endfor %}
                 <h3>Interlinear</h3>
+                {% for inter in inters %}
+                    <h5>{{ inter.strong }} - {{ inter.definition }}</h5>                    
+                    <p>origin: {{ inter.origin }}</p>
+                    <p>use: {{ inter.use }}</p>
+                    <p>classification: {{ inter.classification }}</p>
+                    <p>transcription: {{ inter.transcription }}</p>
+                    <p>pronounce: {{ inter.pronounce }}</p>
+                    <p>spelling: {{ inter.spelling }}</p>
+                {% endfor %}
                 
             </div>
             <div class="col-4">

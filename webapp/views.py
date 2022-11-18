@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Version, Book, Chapter, VerseVersion
+from .models import Version, Book, Chapter, VerseVersion, Reference
 
 # Create your views here.
 def index(request):
@@ -80,7 +80,7 @@ def verses(request, version_abbr, book_abbr, chapter_number):
 def verse(request, version_abbr, book_abbr, chapter_number, verse_number):
     """View funciont to get verses."""
 
-    verse = VerseVersion.objects.filter(
+    verse = VerseVersion.objects.get(
         version__abbreviation__iexact=version_abbr,
         verse__book__abbreviation__iexact=book_abbr,
         verse__chapter__number=chapter_number,
@@ -88,11 +88,17 @@ def verse(request, version_abbr, book_abbr, chapter_number, verse_number):
     )
     book = Book.objects.get(abbreviation=book_abbr)
     books = Book.objects.all()
+    dictionaries = verse.verse.dictionaries.all()
+    inters = verse.verse.intelinears.all()
+    references = Reference.objects.filter(reference=verse.verse.id)    
     context = {
-        'verse': verse[0],
+        'verse': verse,
         'version': version_abbr,
         'book': book,
         'books': books,
+        'references': references,
+        'dictionaries': dictionaries,
+        'inters': inters,
         'chapter_number': chapter_number,
         'range_chapters': range(1, book.chapters + 1),        
     }
