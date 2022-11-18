@@ -175,5 +175,11 @@ REST_FRAMEWORK = {
 #         os.path.join(BASE_DIR, 'static')
 #     )
 
+# API keys below contain actual values tied to your Algolia account
+ALGOLIA = {
+  'APPLICATION_ID': 'D6CYEYDTE4',
+  'API_KEY': '239ce7be24411fa69d4eff0325b7901e'
+}
+
 
 django_heroku.settings(locals())
