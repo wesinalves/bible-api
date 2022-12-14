@@ -104,3 +104,26 @@ def verse(request, version_abbr, book_abbr, chapter_number, verse_number):
     }
 
     return render(request, 'verse.html', context=context)
+
+def references(request, version_abbr, book_abbr, chapter_number, verses):
+    """View funciont to get verses."""
+    verses_list = verses.split(",")
+
+    verses = VerseVersion.objects.filter(
+        version__abbreviation__iexact=version_abbr,
+        verse__book__abbreviation__iexact=book_abbr,
+        verse__chapter__number=chapter_number,
+        verse__number__in=verses_list
+    )
+    book = Book.objects.get(abbreviation=book_abbr)
+    books = Book.objects.all()
+    context = {
+        'verses': verses,
+        'version': version_abbr,
+        'book': book,
+        'books': books,
+        'chapter_number': chapter_number,
+        'range_chapters': range(1, book.chapters + 1),        
+    }
+
+    return render(request, 'verses.html', context=context)

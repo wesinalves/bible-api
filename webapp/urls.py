@@ -9,4 +9,5 @@ urlpatterns = [
     path('<str:version_abbr>/<str:book_abbr>', views.chapters, name='chapters'),
     path('<str:version_abbr>/<str:book_abbr>/<int:chapter_number>', views.verses, name='verses'),
     path('<str:version_abbr>/<str:book_abbr>/<int:chapter_number>/<int:verse_number>', views.verse, name='verse'),
+    path('<str:version_abbr>/<str:book_abbr>/<int:chapter_number>/<str:verses>', views.references, name='references'),
 ]

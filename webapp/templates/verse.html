@@ -22,7 +22,7 @@
                 </div>
                 <h3>Referências</h3>                
                 {% for reference in references %}
-                    <a>{{ reference.text }}</a>
+                    <a href="{% url 'references' version book.abbreviation chapter_number reference.verse%}">{{ reference.text }}</a>
                 {% endfor %}
                 <h3>Dicionário</h3>
                 {% for dictionary in dictionaries %}
