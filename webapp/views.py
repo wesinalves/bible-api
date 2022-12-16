@@ -127,3 +127,31 @@ def references(request, version_abbr, book_abbr, chapter_number, verses):
     }
 
     return render(request, 'verses.html', context=context)
+
+def search(request, term, version_abbr=None, book_abbr=None):
+    """View function to search verses."""
+
+    term_list = term.split(" ")
+    version_abbr = request.session.get('version', 'acf')
+
+    if book_abbr:
+        verses = VerseVersion.objects.filter(
+            version__abbreviation__iexact=version_abbr,
+            verse__book__abbreviation__iexact=book_abbr,        
+            text__in=term_list
+        )        
+    else:
+        verses = VerseVersion.objects.filter(
+            version__abbreviation__iexact=version_abbr,         
+            text__icontains=term
+        )
+    
+    books = Book.objects.all()
+    context = {
+        'verses': verses,
+        'version': version_abbr,        
+        'books': books,
+        'term': term,
+    }
+
+    return render(request, 'search.html', context=context)

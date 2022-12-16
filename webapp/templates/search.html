@@ -6,20 +6,16 @@
     <main class="px-3">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-                <li class="breadcrumb-item" aria-current="page"><a href="{% url 'books' %}">Livro</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'chapters' version book.abbreviation %}">Capítulos</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Versículos</li>            
+              <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>              
             </ol>
         </nav>
         <div class="row">
             <div class="col-8">
-                <h1>Capítulo {{chapter_number}} de {{ book.name }}</h1>
+                <h1>Busca por {{term}}</h1>
                 {% for verse in verses %}        
                 <div class="d-flex align-items-baseline">
-                    <sup class='fw-lighter'>{{ verse.verse.number }}</sup>
-                    <p class='lead'>{{ verse.text }}</p>  
-                    <a href={% url 'verse' version book.abbreviation chapter_number verse.verse.number %}>
+                    <p class='lead'>{{ verse.text }} - <span>{{verse}}</span></p>                    
+                    <a href={% url 'verse' version verse.verse.book.abbreviation verse.verse.chapter.number verse.verse.number %}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
                             <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
                             <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
@@ -29,11 +25,7 @@
                 
                 {% endfor%}
             </div>
-            <div class="col-4">
-                <h3>Capítulos - {{ book.name }}</h3>
-                {% for chapter in range_chapters %}
-                    <a class="btn btn-success mb-1" href={% url 'verses' version book.abbreviation chapter %} role="button">{{ chapter }}</a>
-                {% endfor %}
+            <div class="col-4">                
 
                 <select class="form-select mt-2" aria-label="Default select example">
                     <option selected>Escolha um livro</option>
