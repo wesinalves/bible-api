@@ -1,5 +1,9 @@
 from django.shortcuts import render
-from .models import Version, Book, Chapter, VerseVersion, Reference
+from .models import Version, Book, VerseVersion, Reference
+
+# import operator
+# from django.db.models import Q
+# from functools import reduce
 
 # Create your views here.
 def index(request):
@@ -91,7 +95,7 @@ def verse(request, version_abbr, book_abbr, chapter_number, verse_number):
     dictionaries = verse.verse.dictionaries.all()
     inters = verse.verse.intelinears.all()
     references = Reference.objects.filter(reference=verse.verse.id)    
-    context = {
+    context = {        
         'verse': verse,
         'version': version_abbr,
         'book': book,
@@ -128,7 +132,7 @@ def references(request, version_abbr, book_abbr, chapter_number, verses):
 
     return render(request, 'verses.html', context=context)
 
-def search(request, term, version_abbr=None, book_abbr=None):
+def search(request, term, book_abbr=None):
     """View function to search verses."""
 
     term_list = term.split(" ")
@@ -136,15 +140,26 @@ def search(request, term, version_abbr=None, book_abbr=None):
 
     if book_abbr:
         verses = VerseVersion.objects.filter(
-            version__abbreviation__iexact=version_abbr,
+            #version__abbreviation__iexact=version_abbr,
             verse__book__abbreviation__iexact=book_abbr,        
-            text__in=term_list
+            text__contains=term
         )        
     else:
         verses = VerseVersion.objects.filter(
             version__abbreviation__iexact=version_abbr,         
-            text__icontains=term
+            text__contains=term
         )
+
+    # verses = VerseVersion.objects.filter(
+    #         reduce(
+    #             operator.and_, (
+    #                 Q(
+    #                     version__abbreviation__iexact=version_abbr,         
+    #                     text__icontains=x
+    #                 ) for x in term)
+    #         )
+            
+    #     )
     
     books = Book.objects.all()
     context = {

@@ -44,7 +44,7 @@
 
     <script type="text/javascript">
         $('select').on('change', function(e){                        
-            window.location="{% url 'verses' 'acf' 'abbr' 1 %}".replace(/abbr/, this.value)
+            window.location="{% url 'searchbook' 'abbr' term %}".replace(/abbr/, this.value)
         });
     </script>
 {% endblock content %}

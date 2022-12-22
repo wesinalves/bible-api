@@ -31,12 +31,12 @@
                 <h3>Interlinear</h3>
                 {% for inter in inters %}
                     <h5>{{ inter.strong }} - {{ inter.definition }}</h5>                    
-                    <p>origin: {{ inter.origin }}</p>
-                    <p>use: {{ inter.use }}</p>
-                    <p>classification: {{ inter.classification }}</p>
-                    <p>transcription: {{ inter.transcription }}</p>
-                    <p>pronounce: {{ inter.pronounce }}</p>
-                    <p>spelling: {{ inter.spelling }}</p>
+                    <p class="lead">origin: {{ inter.origin }}</p>
+                    <p class="lead">use: {{ inter.use }}</p>
+                    <p class="lead">classification: {{ inter.classification }}</p>
+                    <p class="lead">transcription: {{ inter.transcription | safe }}</p>
+                    <p class="lead">pronounce: {{ inter.pronounce }}</p>
+                    <p class="lead">spelling: {{ inter.spelling }}</p>
                 {% endfor %}
                 
             </div>

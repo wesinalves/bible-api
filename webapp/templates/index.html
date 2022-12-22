@@ -10,15 +10,29 @@
       <div class="input-group mb-3 w-50 mx-auto">
         <input name="search_term" id="search_term" type="text" class="form-control" placeholder="O que você procura?" aria-label="Username" aria-describedby="basic-addon1">
       </div>
-      <a href="#" class="btn btn-lg btn-secondary fw-bold ">Buscar</a>
-      <a href="#" class="btn btn-lg btn-secondary fw-bold ">Livros</a>                  
+      <a href="#" class="btn btn-lg btn-secondary fw-bold " id="search_button">Buscar</a>
+      <a href="{% url 'books' %}" class="btn btn-lg btn-secondary fw-bold ">Livros</a>                  
       
     </main>   
     
     <script type="text/javascript">
       $("#search_term").on('keypress', function(e){
           if(e.which === 13){
-            window.location="{% url 'search' 'term' %}".replace(/term/, this.value)            
+            if(this.value.length > 3){
+              window.location="{% url 'search' 'term' %}".replace(/term/, this.value)            
+            }else{
+              window.alert('Pesquisa inválida. Por favor, insire um termo com mais de 3 letras.')
+            }
+          }
+          
+      });
+
+      $("#search_button").on('click', function(e){
+          var term = $("#search_term").val()
+          if(term.length > 3){
+             window.location="{% url 'search' 'term' %}".replace(/term/, term)            
+          }else{
+            window.alert('Pesquisa inválida. Por favor, insire um termo com mais de 3 letras.')
           }
       });
     </script>
