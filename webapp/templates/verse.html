@@ -7,7 +7,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
-              <li class="breadcrumb-item" aria-current="page"><a href="{% url 'books' %}">Livro</a></li>
+              <li class="breadcrumb-item" aria-current="page"><a href="{% url 'books' %}">Livros</a></li>
               <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'chapters' version book.abbreviation %}">Capítulos</a></li>
               <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'verses' version book.abbreviation chapter_number %}">Versículos</a></li>
               <li class="breadcrumb-item active" aria-current="page" active>{{ verse.verse.number }}</li>
@@ -41,7 +41,7 @@
                 
             </div>
             <div class="col-4">
-                <h3>Quer receber mensagens bíblicas?</h3>                
+                <h3>Compartilhe nas suas redes sociais</h3>                
             </div>
         </div>
       
