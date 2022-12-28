@@ -25,26 +25,8 @@ router.register(r'verses', views.VerseViewSet)
 #router.register(r'versesversion', views.VerseVersionViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
-    path(
-        'versesversion/<str:version>/<str:book>/',
-        views.VerseVersionViewSet.as_view(
-            actions={"get": "list"}),
-        name="verseversion-by-book"
-    ),
-    path(
-        'versesversion/<str:version>/<str:book>/<int:chapter>/',
-        views.VerseVersionViewSet.as_view(
-            actions={"get": "list"}),
-        name="verseversion-by-chapter"
-    ),
-    path(
-        'versesversion/<str:version>/<str:book>/<int:chapter>/<int:verse>/',
-        views.VerseVersionViewSet.as_view(
-            actions={"get": "list"}),
-        name="verseversion-by-verse"
-    ),
+    path('api/', include(router.urls)),    
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('admin/', admin.site.urls),
-    path('app/', include('webapp.urls')),
+    path('', include('webapp.urls')),
 ]

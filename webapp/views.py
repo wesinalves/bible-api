@@ -170,3 +170,25 @@ def search(request, term, book_abbr=None):
     }
 
     return render(request, 'search.html', context=context)
+
+def terms(request):
+    '''View function to terms of usage.'''
+
+    version = request.session.get('version', 'acf')
+    context = {
+        'books': books,
+        'version': version,
+    }
+
+    return render(request, 'terms.html', context=context)
+
+def privacy(request):
+    '''View function to privacy policy.'''
+
+    version = request.session.get('version', 'acf')
+    context = {
+        'books': books,
+        'version': version,
+    }
+
+    return render(request, 'policy.html', context=context)
