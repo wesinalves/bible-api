@@ -26,10 +26,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-(1%gt4$dpg!q%fiwlepamvsr-a%05d4*n(a_pojbuq$&hl@+t4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['https://warm-lake-57978.herokuapp.com']
-CSRF_TRUSTED_ORIGINS = ['https://warm-lake-57978.herokuapp.com']
+ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://bibliamax.com.br']
 
 
 # Application definition
@@ -176,10 +176,10 @@ REST_FRAMEWORK = {
 #     )
 
 # API keys below contain actual values tied to your Algolia account
-ALGOLIA = {
-  'APPLICATION_ID': 'D6CYEYDTE4',
-  'API_KEY': '239ce7be24411fa69d4eff0325b7901e'
-}
+# ALGOLIA = {
+#   'APPLICATION_ID': 'D6CYEYDTE4',
+#   'API_KEY': '239ce7be24411fa69d4eff0325b7901e'
+# }
 
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
