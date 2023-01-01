@@ -17,11 +17,13 @@ class InterlinearAdmin(admin.StackedInline):
     model = VerseInterlinear
     extra = 1
 
+
 class DictionaryAdmin(admin.StackedInline):
     """BookVersion Inline."""
 
     model = VerseDictionary
     extra = 1
+
 
 class ReferenceAdmin(admin.StackedInline):
     """BookVersion Inline."""
@@ -44,17 +46,18 @@ class VerseAdmin(admin.ModelAdmin):
     """Verse Admin."""
 
     list_filter = ['book']
-    list_display = ['number','chapter']
+    list_display = ['number', 'chapter']
     search_fields = ['book', 'chapter', 'number']
     inlines = [
         DictionaryAdmin, InterlinearAdmin, ReferenceAdmin
     ]
 
+
 class VerseVersionAdmin(admin.ModelAdmin):
     """BookVersion Inline."""
 
     list_filter = ['version']
-    list_display = ['verse','version']
+    list_display = ['verse', 'version']
     search_fields = ['verse', 'version', 'text']
     readonly_fields = ['verse', 'version']
 
@@ -74,4 +77,4 @@ admin.site.register(Interlinear)
 admin.site.register(Dictionary)
 admin.site.register(VerseVersion, VerseVersionAdmin)
 
-#sMw%SQzO$ziJ 0 O
+# sMw%SQzO$ziJ 0 O
