@@ -30,7 +30,7 @@ class Book(models.Model):
     """Book Class."""
 
     name = models.CharField(max_length=100)
-    abbreviation = models.CharField(max_length=5)    
+    abbreviation = models.CharField(max_length=5)
     chapters = models.IntegerField(default=0)
     versions = models.ManyToManyField(Version, through='BookVersion')
 
@@ -44,7 +44,7 @@ class BookVersion(models.Model):
 
     name = models.CharField(max_length=100)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    version = models.ForeignKey(Version, on_delete=models.CASCADE)    
+    version = models.ForeignKey(Version, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         """Return the name of the book version."""
@@ -55,7 +55,7 @@ class Chapter(models.Model):
     """Chapter Class."""
 
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
-    number = models.IntegerField()    
+    number = models.IntegerField()
     verses = models.IntegerField(default=0)
 
     def __str__(self) -> str:
@@ -94,12 +94,12 @@ class Dictionary(models.Model):
 class Verse(models.Model):
     """Verse Class."""
 
-    book = models.ForeignKey(Book, on_delete=models.CASCADE)    
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE)
-    number = models.IntegerField()        
+    number = models.IntegerField()
     versions = models.ManyToManyField(Version, through='VerseVersion')
-    dictionaries = models.ManyToManyField(Dictionary, through='VerseDictionary', null=True, blank=True)
-    intelinears = models.ManyToManyField(Interlinear, through='VerseInterlinear', null=True, blank=True)    
+    dictionaries = models.ManyToManyField(Dictionary, through='VerseDictionary', blank=True)
+    intelinears = models.ManyToManyField(Interlinear, through='VerseInterlinear', blank=True)
 
     def __str__(self) -> str:
         """Return the number of the verse."""
