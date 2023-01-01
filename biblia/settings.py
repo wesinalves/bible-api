@@ -155,6 +155,8 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10
 }
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # if os.getcwd() == '/app':
 #     import dj_database_url
 #     DATABASES = {
