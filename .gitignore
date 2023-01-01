@@ -1,4 +1,4 @@
 *.pyc
 biblia/settings.py
-.env
+.env*
 *.sql
