@@ -13,7 +13,7 @@
             </ol>
         </nav>
         <div class="row">
-            <div class="col-8">
+            <div class="col-md-8">
                 <h1>Capítulo {{chapter_number}} de {{ book.name }}</h1>
                 {% for verse in verses %}        
                 <div class="d-flex align-items-baseline">
@@ -29,7 +29,7 @@
                 
                 {% endfor%}
             </div>
-            <div class="col-4">
+            <div class="col-md-4">
                 <h3>Capítulos - {{ book.name }}</h3>
                 {% for chapter in range_chapters %}
                     <a class="btn btn-success mb-1" href={% url 'verses' version book.abbreviation chapter %} role="button">{{ chapter }}</a>
