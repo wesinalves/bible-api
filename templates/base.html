@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,7 +32,7 @@
 
         /* Show it is fixed to the top */
         body {
-            min-height: 60rem;
+            min-height: 30rem;
             padding-top: 4.5rem;
         }
 
@@ -67,6 +68,16 @@
 
 
     </style>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VN3P2N9G7J"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-VN3P2N9G7J');
+    </script>
 
       
 </head>
@@ -124,7 +135,7 @@
         {% block content %}
 
         {% endblock content %}
-        <footer class="mt-auto text-dark-50 text-center">
+        <footer class="container mt-auto text-dark-50 text-center">
             <p>Bíblia Max @{% now "Y" %}<br>
               <a href={% url 'privacy' %}>Política de privacidade</a> | 
               <a href={% url 'terms' %}>Termos de uso </a> | 
