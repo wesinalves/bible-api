@@ -71,9 +71,11 @@ def verses(request, version_abbr, book_abbr, chapter_number):
     )
     book = Book.objects.get(abbreviation=book_abbr)
     books = Book.objects.all()
+    versions = Version.objects.order_by('name')
     context = {
         'verses': verses,
         'version': version_abbr,
+        'versions': versions,
         'book': book,
         'books': books,
         'chapter_number': chapter_number,

@@ -35,13 +35,21 @@
                     <a class="btn btn-success mb-1" href={% url 'verses' version book.abbreviation chapter %} role="button">{{ chapter }}</a>
                 {% endfor %}
 
-                <select class="form-select mt-2" aria-label="Default select example">
+                <select class="form-select mt-2" aria-label="Default select example" id="comboLivro">
                     <option selected>Escolha um livro</option>
                     {% for b in books %}
                         <option value={{ b.abbreviation }}>{{ b.name }}</option>
                     {% endfor %}
                     
-                </select>               
+                </select>
+                
+                <select class="form-select mt-2" aria-label="Default select example" id="comboVersao">
+                    <option selected>Escolha uma Versão</option>
+                    {% for v in versions %}
+                        <option value={{ v.abbreviation }}>{{ v.name }}</option>
+                    {% endfor %}
+                    
+                </select>
                  
             </div>
         </div>
@@ -51,8 +59,12 @@
     
 
     <script type="text/javascript">
-        $('select').on('change', function(e){                        
+        $('#comboLivro').on('change', function(e){                        
             window.location="{% url 'verses' 'acf' 'abbr' 1 %}".replace(/abbr/, this.value)
+        });
+
+        $('#comboVersao').on('change', function(e){                        
+            window.location="{% url 'verses' 'version' book.abbreviation chapter_number %}".replace(/version/, this.value)
         });
     </script>
 {% endblock content %}
