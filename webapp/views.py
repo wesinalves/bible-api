@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .models import Version, Book, VerseVersion, Reference
+from .models import Version, Book, VerseVersion, Reference, Order
+import json
 
 # import operator
 # from django.db.models import Q
@@ -209,4 +210,36 @@ def support(request):
         'version': version,
     }
 
+    if request.method == "POST":
+        order = Order.objects.create(
+            amount=request.POST['amount']
+        )
+        order.generate_secret()
+        order.save()
+        data = {
+            "amount": request.POST['amount'],
+            "success_url": f"https://website.com/confirm/{order.id}/{order.secret}",
+            "back_url": f"https://website.com/orders/{order.id}",
+        }
+        url="https://stage-api.ioka.kz/v2/orders" # trocar pela url do pagseguro
+        response = request.post(url, headers={
+            "API-KEY": TEST_API_KEY,  # authenticate at your Provider
+            "Content-Type": "application/json"
+        }, data=json.dumps(data))
+
     return render(request, 'support.html', context=context)
+
+def confirm(request, order_id, order_secret):
+    '''Confirm the online payment.'''
+    version = request.session.get('version', 'acf')
+    context = {
+        'books': books,
+        'version': version,
+    }
+    
+    order = Order.objects.get(pk=order_id)
+    if order.secret == order_secret:
+        order.paid = True
+        order.save()
+    
+    return render(request, 'thanks.html', context=context)
