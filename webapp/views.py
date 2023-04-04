@@ -199,3 +199,14 @@ def privacy(request):
     }
 
     return render(request, 'policy.html', context=context)
+
+def support(request):
+    '''View function to privacy policy.'''
+
+    version = request.session.get('version', 'acf')
+    context = {
+        'books': books,
+        'version': version,
+    }
+
+    return render(request, 'support.html', context=context)
