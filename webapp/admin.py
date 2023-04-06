@@ -1,7 +1,9 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Idiom, Book, BookVersion, Chapter, Verse, VerseVersion, VerseDictionary, VerseInterlinear, Reference, Interlinear, Dictionary, Version
+from .models import Idiom, Book, BookVersion, Chapter, \
+Verse, VerseVersion, VerseDictionary, VerseInterlinear, \
+Reference, Interlinear, Dictionary, Version, Order
 
 
 class BookVersionAdmin(admin.StackedInline):
@@ -76,5 +78,6 @@ admin.site.register(Verse, VerseAdmin)
 admin.site.register(Interlinear)
 admin.site.register(Dictionary)
 admin.site.register(VerseVersion, VerseVersionAdmin)
+admin.site.register(Order)
 
 # sMw%SQzO$ziJ 0 O
