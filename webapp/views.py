@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from .models import Version, Book, VerseVersion, Reference, Order
+from django.http import HttpResponse
+
 import json
 
 # import operator
@@ -205,9 +207,11 @@ def support(request):
     '''View function to privacy policy.'''
 
     version = request.session.get('version', 'acf')
+    values = [10, 20, 30, 50, 100, 200, 300]
     context = {
         'books': books,
         'version': version,
+        'values': values,
     }
 
     if request.method == "POST":
@@ -226,20 +230,29 @@ def support(request):
             "API-KEY": TEST_API_KEY,  # authenticate at your Provider
             "Content-Type": "application/json"
         }, data=json.dumps(data))
+        #return HttpResponse(request.POST['amount'])
 
     return render(request, 'support.html', context=context)
 
 def confirm(request, order_id, order_secret):
-    '''Confirm the online payment.'''
-    version = request.session.get('version', 'acf')
-    context = {
-        'books': books,
-        'version': version,
-    }
+    '''Confirm the online payment.'''    
     
     order = Order.objects.get(pk=order_id)
     if order.secret == order_secret:
         order.paid = True
         order.save()
+    
+    return HttpResponse("OK")
+
+def order(request, order_id):
+    '''Get back order.'''
+    version = request.session.get('version', 'acf')
+    order = Order.objects.get(pk=order_id)
+
+    context = {
+        'books': books,
+        'version': version,
+        'order': order,
+    }
     
     return render(request, 'thanks.html', context=context)
