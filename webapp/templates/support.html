@@ -25,9 +25,10 @@
     <p class="lead">Além disso, uma parte da verba arrecada é destinado a obras de caridade. 
       Se o BibliaMax é importante para você, considere fazer uma doação.</p>
     
-    <form action={% url 'support' %} method="post">
+    <div class="container text-bg-light p-4">
+      <form action={% url 'support' %} method="post">
       {% csrf_token %}
-      <fieldset>
+      <fieldset class="mb-3">
         <legend>Faça sua doação</legend>
         {% for value in values %}
         <div class="form-check">
@@ -36,13 +37,13 @@
             R$ {{ value }}
           </label>
         </div>
-        {% endfor %}
-        
-        <button type="submit" class="btn btn-primary">Doar</button>
-      </fieldset>
-      
+        {% endfor %}      
+    </fieldset>    
+    <button type="submit" value="1" name="cartao" class="btn btn-primary">Doar com cartão de crédito</button>
+    <button type="submit" value="1" name="boleto" class="btn btn-primary">Doar com boloeto bancário</button>
+    <button type="submit" value="1" name="pix" class="btn btn-primary">Doar via pix</button>
     </form>
-
+  </div>
 
 
         
