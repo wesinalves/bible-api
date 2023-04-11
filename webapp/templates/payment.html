@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Bíblia Max - Apoie esse projeto</title>
+{% endblock title %}
+
+{% block content %}
+
+<main class="px-3">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="{% url 'support' %}">Apoie esse projeto</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Pagamento</li>
+      </ol>
+    </nav>
+
+    <h2>Doe R$ {{ amount }}</h2>   
+    
+    
+    <div id="paymentBrick_container"></div>
+    
+    
+</main>
+
+<script src="https://sdk.mercadopago.com/js/v2"></script>
+<script type="text/javascript">
+  const mp = new MercadoPago('TEST-60100d74-93bd-4341-9759-1d5b5d0abb1e');
+  const bricksBuilder = mp.bricks();
+  const order_amount = parseFloat("{{ amount }}")
+
+  const renderPaymentBrick = async (bricksBuilder) => {
+  const settings = {
+    initialization: {
+      /*
+        "amount" é o valor total a ser pago por todos os meios de pagamento
+      com exceção da Conta Mercado Pago e Parcelamento sem cartão de crédito, que tem seu valor de processamento determinado no backend através do "preferenceId"
+      */
+      amount: order_amount,      
+    },
+    customization: {
+      paymentMethods: {
+        ticket: "all",
+        bankTransfer: "all",
+        creditCard: "all",
+        debitCard: "all",        
+      },
+    },
+    callbacks: {
+      onReady: () => {
+        /*
+          Callback chamado quando o Brick estiver pronto.
+          Aqui você pode ocultar loadings do seu site, por exemplo.
+        */
+      },
+      onSubmit: ({ selectedPaymentMethod, formData }) => {
+        // callback chamado ao clicar no botão de submissão dos dados
+        return new Promise((resolve, reject) => {
+          fetch("/process_payment", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          })
+            .then((response) => response.json())
+            .then((response) => {
+              // receber o resultado do pagamento
+              resolve(response.idPayment);
+            })
+            .catch((error) => {
+              // lidar com a resposta de erro ao tentar criar o pagamento
+              reject();
+            });
+        });
+      },
+      onError: (error) => {
+        // callback chamado para todos os casos de erro do Brick
+        console.error(error);
+      },
+    },
+  };
+  window.paymentBrickController = await bricksBuilder.create(
+    "payment",
+    "paymentBrick_container",
+    settings
+  );
+  };
+  renderPaymentBrick(bricksBuilder);
+
+  const resolve = (idPayment) => {
+    if (idPayment){
+      window.location="{% url 'order' payment %}".replace(/payment/, idPayment)
+    }
+  }
+  const reject = () => {
+    window.location="{% url 'reject' %}"
+  }
+</script>
+{% endblock content %}
+
+
