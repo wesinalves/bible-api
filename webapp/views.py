@@ -185,7 +185,6 @@ def terms(request):
 
     version = request.session.get('version', 'acf')
     context = {
-        'books': books,
         'version': version,
     }
 
@@ -197,7 +196,6 @@ def privacy(request):
 
     version = request.session.get('version', 'acf')
     context = {
-        'books': books,
         'version': version,
     }
 
@@ -209,28 +207,32 @@ def support(request):
     version = request.session.get('version', 'acf')
     values = [10, 20, 30, 50, 100, 200, 300]
     context = {
-        'books': books,
         'version': version,
         'values': values,
     }
 
     if request.method == "POST":
-        order = Order.objects.create(
-            amount=request.POST['amount']
-        )
-        order.generate_secret()
-        order.save()
-        data = {
-            "amount": request.POST['amount'],
-            "success_url": f"https://website.com/confirm/{order.id}/{order.secret}",
-            "back_url": f"https://website.com/orders/{order.id}",
-        }
-        url="https://stage-api.ioka.kz/v2/orders" # trocar pela url do pagseguro
-        response = request.post(url, headers={
-            "API-KEY": TEST_API_KEY,  # authenticate at your Provider
-            "Content-Type": "application/json"
-        }, data=json.dumps(data))
-        #return HttpResponse(request.POST['amount'])
+        context = {
+            'version': version,
+            'amount': request.POST['amount'],
+        } 
+        # order = Order.objects.create(
+        #     amount=request.POST['amount']
+        # )
+        # order.generate_secret()
+        # order.save()
+        # data = {
+        #     "amount": request.POST['amount'],
+        #     "success_url": f"https://website.com/confirm/{order.id}/{order.secret}",
+        #     "back_url": f"https://website.com/orders/{order.id}",
+        # }
+        # url="https://stage-api.ioka.kz/v2/orders" # trocar pela url do pagseguro
+        # response = request.post(url, headers={
+        #     "API-KEY": TEST_API_KEY,  # authenticate at your Provider
+        #     "Content-Type": "application/json"
+        # }, data=json.dumps(data))
+        return render(request, 'payment.html', context=context)
+       
 
     return render(request, 'support.html', context=context)
 
@@ -250,9 +252,18 @@ def order(request, order_id):
     order = Order.objects.get(pk=order_id)
 
     context = {
-        'books': books,
         'version': version,
         'order': order,
+    }
+    
+    return render(request, 'thanks.html', context=context)
+
+def reject(request):
+    '''Reject payments.'''
+    version = request.session.get('version', 'acf')
+
+    context = {
+        'version': version,
     }
     
     return render(request, 'thanks.html', context=context)
