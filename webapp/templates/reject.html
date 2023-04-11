@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<title>Bíblia Max - Apoie esse projeto</title>
+{% endblock title %}
+
+{% block content %}
+
+<main class="px-3">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+        <li class="breadcrumb-item" aria-current="page"><a href="{% url 'support' %}">Apoie esse projeto</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Pagamento</li>
+      </ol>
+    </nav>
+
+    <p>Ocorreu algum erro ao processar a transação.</p>        
+
+    
+</main>
+
+{% endblock content %}
