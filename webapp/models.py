@@ -157,9 +157,12 @@ class Reference(models.Model):
 class Order(models.Model):
     secret = models.CharField(max_length=1000, default="", blank=True)
     amount = models.DecimalField(default=0, decimal_places=2, max_digits=10)
-    paid = models.BooleanField(default=False)
-    status = models.CharField(max_length=10, default="", blank=True)
-    checkout_url = models.CharField(max_length=1000, default="", blank=True)
+    status = models.CharField(max_length=10, default="")
+    status_detail = models.CharField(max_length=1000, default="")
+    payment_id = models.IntegerField(max_length=10, default=0)
+    date_approved = models.DateTimeField()
+    payment_method = models.CharField(max_length=100, default="", blank=True)
+    payment_type = models.CharField(max_length=100, default="", blank=True)
 
     def __str__(self) -> str:
         """Return the order chekout"""
