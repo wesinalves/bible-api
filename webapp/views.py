@@ -1,8 +1,12 @@
 from django.shortcuts import render
 from .models import Version, Book, VerseVersion, Reference, Order
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 
+import os
 import json
+import mercadopago
+from datetime import datetime
 
 # import operator
 # from django.db.models import Q
@@ -212,9 +216,11 @@ def support(request):
     }
 
     if request.method == "POST":
+        api_key = os.getenv("API_KEY")
         context = {
             'version': version,
             'amount': request.POST['amount'],
+            'api_key': api_key
         } 
         # order = Order.objects.create(
         #     amount=request.POST['amount']
@@ -236,6 +242,47 @@ def support(request):
 
     return render(request, 'support.html', context=context)
 
+def process_payment(request):
+    '''Process form payment'''
+    token = os.getenv("ACCESS_TOKEN")
+    sdk = mercadopago.SDK(token)
+
+    request_values = request.get_json()
+
+    payment_data = {
+        "transaction_amount": float(request_values["transaction_amount"]),
+        "token": request_values["token"],
+        "installments": int(request_values["installments"]),
+        "payment_method_id": request_values["payment_method_id"],
+        "issuer_id": request_values["issuer_id"],
+        "payer": {
+            "email": request_values["payer"]["email"],
+            "identification": {
+                "type": request_values["payer"]["identification"]["type"], 
+                "number": request_values["payer"]["identification"]["number"]
+            }
+        }
+    }
+
+    payment_response = sdk.payment().create(payment_data)
+    payment = payment_response["response"]
+
+    # save payment in database
+    order = Order.objects.create(
+        amount = float(request_values["transaction_amount"]),
+        status = payment["status"],
+        status_detail = payment["status_detail"],
+        payment_id = payment["id"],
+        date_approved = datetime.fromisoformat(payment["date_approved"]),
+        payment_method = payment["payment_method_id"],
+        payment_type = payment["payment_type_id"]
+    )
+    order.generate_secret()
+    order.save()
+    return HttpResponseRedirect(reverse('webapp:thanks'))
+
+
+
 def confirm(request, order_id, order_secret):
     '''Confirm the online payment.'''    
     
@@ -246,14 +293,12 @@ def confirm(request, order_id, order_secret):
     
     return HttpResponse("OK")
 
-def order(request, order_id):
+def thanks(request):
     '''Get back order.'''
     version = request.session.get('version', 'acf')
-    order = Order.objects.get(pk=order_id)
 
     context = {
         'version': version,
-        'order': order,
     }
     
     return render(request, 'thanks.html', context=context)
