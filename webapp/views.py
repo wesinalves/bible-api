@@ -279,7 +279,7 @@ def process_payment(request):
     )
     order.generate_secret()
     order.save()
-    return HttpResponseRedirect(reverse('webapp:thanks'))
+    return HttpResponseRedirect(reverse('webapp:status_screen', args=[payment["id"]]))
 
 
 
@@ -293,15 +293,16 @@ def confirm(request, order_id, order_secret):
     
     return HttpResponse("OK")
 
-def thanks(request):
+def status_screen(request, payment_id):
     '''Get back order.'''
-    version = request.session.get('version', 'acf')
+    version = request.session.get('version', 'acf')    
 
     context = {
         'version': version,
+        'payment_id': payment_id
     }
     
-    return render(request, 'thanks.html', context=context)
+    return render(request, 'status_screen.html', context=context)
 
 def reject(request):
     '''Reject payments.'''
@@ -311,4 +312,4 @@ def reject(request):
         'version': version,
     }
     
-    return render(request, 'thanks.html', context=context)
+    return render(request, 'status_screen.html', context=context)
