@@ -15,7 +15,10 @@
       </ol>
     </nav>
 
-    <h2>Doe R$ {{ amount }}</h2>   
+    <h2>Doe R$ {{ amount }}</h2>
+    <div class="spinner-border" role="status" id="spinner">
+      <span class="visually-hidden">Loading...</span>
+    </div>   
     
     
     <div id="paymentBrick_container"></div>
@@ -25,7 +28,7 @@
 
 <script src="https://sdk.mercadopago.com/js/v2"></script>
 <script type="text/javascript">
-  const mp = new MercadoPago('TEST-60100d74-93bd-4341-9759-1d5b5d0abb1e');
+  const mp = new MercadoPago("{{ api_key }}");
   const bricksBuilder = mp.bricks();
   const order_amount = parseFloat("{{ amount }}")
 
@@ -52,6 +55,8 @@
           Callback chamado quando o Brick estiver pronto.
           Aqui você pode ocultar loadings do seu site, por exemplo.
         */
+       $("#spinner").addClass("d-none")
+
       },
       onSubmit: ({ selectedPaymentMethod, formData }) => {
         // callback chamado ao clicar no botão de submissão dos dados
@@ -88,12 +93,11 @@
   };
   renderPaymentBrick(bricksBuilder);
 
-  const resolve = (idPayment) => {
-    if (idPayment){
-      window.location="{% url 'order' payment %}".replace(/payment/, idPayment)
-    }
+  const resolve = async (idPayment) => {
+    window.location="{% url 'order' 'payment' %}".replace(/payment/, idPayment)
+    
   }
-  const reject = () => {
+  const reject = async () => {
     window.location="{% url 'reject' %}"
   }
 </script>
