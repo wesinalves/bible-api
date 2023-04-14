@@ -245,31 +245,32 @@ def support(request):
 def process_payment(request):
     '''Process form payment'''
     token = os.getenv("ACCESS_TOKEN")
-    sdk = mercadopago.SDK(token)
+    sdk = mercadopago.SDK(f"{token}")
 
-    request_values = request.get_json()
+    #return HttpResponse(request)
+    data = json.loads(request.body)    
 
     payment_data = {
-        "transaction_amount": float(request_values["transaction_amount"]),
-        "token": request_values["token"],
-        "installments": int(request_values["installments"]),
-        "payment_method_id": request_values["payment_method_id"],
-        "issuer_id": request_values["issuer_id"],
+        "transaction_amount": float(data["transaction_amount"]),
+        "token": data["token"],
+        "installments": int(data["installments"]),
+        "payment_method_id": data["payment_method_id"],
+        "description": "Doação para o site Bibliamax",
         "payer": {
-            "email": request_values["payer"]["email"],
+            "email": data["payer"]["email"],
             "identification": {
-                "type": request_values["payer"]["identification"]["type"], 
-                "number": request_values["payer"]["identification"]["number"]
-            }
+                "type": data["payer"]["identification"]["type"],
+                "number": data["payer"]["identification"]["number"]
+            },            
         }
     }
 
     payment_response = sdk.payment().create(payment_data)
-    payment = payment_response["response"]
+    payment = payment_response["response"]    
 
     # save payment in database
     order = Order.objects.create(
-        amount = float(request_values["transaction_amount"]),
+        amount = float(data["transaction_amount"]),
         status = payment["status"],
         status_detail = payment["status_detail"],
         payment_id = payment["id"],
@@ -279,7 +280,8 @@ def process_payment(request):
     )
     order.generate_secret()
     order.save()
-    return HttpResponseRedirect(reverse('webapp:status_screen', args=[payment["id"]]))
+    #return HttpResponseRedirect(reverse('webapp:status_screen', args=[payment["id"]]))
+    return HttpResponse("OK")
 
 
 
