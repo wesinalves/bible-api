@@ -30,7 +30,7 @@
 <script type="text/javascript">
   const mp = new MercadoPago("{{ api_key }}");
   const bricksBuilder = mp.bricks();
-  const order_amount = parseFloat("{{ amount }}")
+  const order_amount = parseFloat("{{ amount }}")  
 
   const renderPaymentBrick = async (bricksBuilder) => {
   const settings = {
@@ -65,6 +65,7 @@
             method: "POST",
             headers: {
               "Content-Type": "application/json",
+              "X-CSRFToken": csrfcookie()
             },
             body: JSON.stringify(formData),
           })
@@ -94,12 +95,28 @@
   renderPaymentBrick(bricksBuilder);
 
   const resolve = async (idPayment) => {
-    window.location="{% url 'order' 'payment' %}".replace(/payment/, idPayment)
+    console.log("pagamento concluído com sucesso " + idPayment)
     
   }
   const reject = async () => {
-    window.location="{% url 'reject' %}"
+    console.log("pagamento foi rejeitado")
   }
+
+  const csrfcookie = () => {
+    var cookieValue = null,
+        name = 'csrftoken';
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+};
 </script>
 {% endblock content %}
 
