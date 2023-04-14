@@ -166,7 +166,7 @@ class Order(models.Model):
 
     def __str__(self) -> str:
         """Return the order chekout"""
-        return self.checkout_url
+        return str(self.payment_id)
     
     def generate_secret(self):
         self.secret = str(random.randint(10000, 99999))
