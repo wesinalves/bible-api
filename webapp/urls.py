@@ -10,8 +10,9 @@ urlpatterns = [
     path('support', views.support, name='support'),
     path('reject', views.reject, name='reject'),
     path('confirm/<int:order_id>/<str:order_secret>', views.confirm, name='confirm'),
-    path('status/<str:order_id>', views.status_screen, name='status'),
-    path('process_payment', views.process_payment, name='process_payment'),
+    path('success', views.success, name='success'),
+    path('cancel', views.cancel, name='cancel'),
+    #path('process_payment', views.process_payment, name='process_payment'),
 
     path('versions/<str:version_abbr>', views.versions, name='versions'),
     path('search/<str:book_abbr>/<str:term>', views.search, name='searchbook'),
