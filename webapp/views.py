@@ -209,27 +209,27 @@ def support(request):
     '''View function to privacy policy.'''
 
     version = request.session.get('version', 'acf')
-    values = [10, 20, 30, 50, 100, 200, 300]
+    quantities = [1, 2, 3, 4, 7, 10]
     context = {
         'version': version,
-        'values': values,
+        'values': quantities,
     }
 
     if request.method == "POST":
-        stripe.api_key = 'sk_test_Ho24N7La5CVDtbmpjc377lJI'
-        # price = request.POST["amount"]
+        stripe.api_key = os.getenv("API_KEY")
+        quantity = request.POST["quantity"]
         try:
             checkout_session = stripe.checkout.Session.create(
                 line_items=[
                     {
-                        'price': '{{price_id}}',
-                        'quantity': 1,
+                        'price': 'price_1MyWV9HnNxK4tqJLCzGTS3mS',
+                        'quantity': quantity,
                     },
                 ],
                 mode='payment',
-                success_url=reverse('success'),
-                cancel_url=reverse('cancel')
-            )        
+                success_url=request.build_absolute_uri(reverse('success')),
+                cancel_url=request.build_absolute_uri(reverse('cancel'))
+            )
             return HttpResponseRedirect(checkout_session.url)
         except Exception as e:
             return HttpResponse(e)       
@@ -296,18 +296,17 @@ def confirm(request, order_id, order_secret):
     
     return HttpResponse("OK")
 
-def success(request, payment_id):
+def success(request):
     '''Get back order.'''
     version = request.session.get('version', 'acf')    
 
     context = {
-        'version': version,
-        'payment_id': payment_id
+        'version': version,        
     }
     
     return render(request, 'success.html', context=context)
 
-def reject(request):
+def cancel(request):
     '''Reject payments.'''
     version = request.session.get('version', 'acf')
 
@@ -315,4 +314,4 @@ def reject(request):
         'version': version,
     }
     
-    return render(request, 'status_screen.html', context=context)
+    return render(request, 'cancel.html', context=context)
