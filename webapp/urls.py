@@ -8,7 +8,6 @@ urlpatterns = [
     path('privacy', views.privacy, name='privacy'),
     path('books', views.books, name='books'),
     path('support', views.support, name='support'),
-    path('reject', views.reject, name='reject'),
     path('confirm/<int:order_id>/<str:order_secret>', views.confirm, name='confirm'),
     path('success', views.success, name='success'),
     path('cancel', views.cancel, name='cancel'),
