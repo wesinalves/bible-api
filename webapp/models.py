@@ -154,6 +154,7 @@ class Reference(models.Model):
         """Return the reference."""
         return self.text
 
+
 class Order(models.Model):
     secret = models.CharField(max_length=1000, default="", blank=True)
     amount = models.DecimalField(default=0, decimal_places=2, max_digits=10)
@@ -165,6 +166,6 @@ class Order(models.Model):
     def __str__(self) -> str:
         """Return the order chekout"""
         return str(self.secret)
-    
+
     def generate_secret(self):
         self.secret = str(random.randint(10000, 99999))

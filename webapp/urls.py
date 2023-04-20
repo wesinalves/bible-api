@@ -9,7 +9,7 @@ urlpatterns = [
     path('books', views.books, name='books'),
     path('support', views.support, name='support'),
     path('success', views.success, name='success'),
-    path('cancel', views.cancel, name='cancel'),    
+    path('cancel', views.cancel, name='cancel'),
 
     path('versions/<str:version_abbr>', views.versions, name='versions'),
     path('search/<str:book_abbr>/<str:term>', views.search, name='searchbook'),

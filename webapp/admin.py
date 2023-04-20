@@ -2,8 +2,8 @@ from django.contrib import admin
 
 # Register your models here.
 from .models import Idiom, Book, BookVersion, Chapter, \
-Verse, VerseVersion, VerseDictionary, VerseInterlinear, \
-Reference, Interlinear, Dictionary, Version, Order
+    Verse, VerseVersion, VerseDictionary, VerseInterlinear, \
+    Reference, Interlinear, Dictionary, Version, Order
 
 
 class BookVersionAdmin(admin.StackedInline):
