@@ -205,6 +205,7 @@ def privacy(request):
 
     return render(request, 'policy.html', context=context)
 
+
 def support(request):
     '''View function to privacy policy.'''
 
@@ -223,7 +224,7 @@ def support(request):
             checkout_session = stripe.checkout.Session.create(
                 line_items=[
                     {
-                        'price': 'price_1MyWV9HnNxK4tqJLCzGTS3mS',
+                        'price': os.getenv("PRICE_ID"),
                         'quantity': quantity,
                     },
                 ],
@@ -233,29 +234,31 @@ def support(request):
             )
             # save payment in database
             order = Order.objects.create(
-                amount = request.POST["quantity"] * 30,
-                status = "approved",
-                date_approved = datetime.now(),
-                payment_method = "credit card",
-                payment_type = "payment"
+                amount=request.POST["quantity"] * 30,
+                status="approved",
+                date_approved=datetime.now(),
+                payment_method="credit card",
+                payment_type="payment"
             )
             order.generate_secret()
             order.save()
             return HttpResponseRedirect(checkout_session.url)
         except Exception as e:
-            return HttpResponse(e)       
+            return HttpResponse(e)
 
     return render(request, 'support.html', context=context)
 
+
 def success(request):
     '''Get back order.'''
-    version = request.session.get('version', 'acf')    
+    version = request.session.get('version', 'acf')
 
     context = {
-        'version': version,        
+        'version': version,
     }
-    
+
     return render(request, 'success.html', context=context)
+
 
 def cancel(request):
     '''Reject payments.'''
@@ -264,5 +267,5 @@ def cancel(request):
     context = {
         'version': version,
     }
-    
+
     return render(request, 'cancel.html', context=context)
