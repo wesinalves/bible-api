@@ -219,6 +219,7 @@ def support(request):
         stripe.api_key = os.getenv("API_KEY")
         quantity = request.POST["quantity"]
         try:
+            # stripe checkout
             checkout_session = stripe.checkout.Session.create(
                 line_items=[
                     {
@@ -230,71 +231,21 @@ def support(request):
                 success_url=request.build_absolute_uri(reverse('success')),
                 cancel_url=request.build_absolute_uri(reverse('cancel'))
             )
+            # save payment in database
+            order = Order.objects.create(
+                amount = request.POST["quantity"] * 30,
+                status = "approved",
+                date_approved = datetime.now(),
+                payment_method = "credit card",
+                payment_type = "payment"
+            )
+            order.generate_secret()
+            order.save()
             return HttpResponseRedirect(checkout_session.url)
         except Exception as e:
             return HttpResponse(e)       
 
     return render(request, 'support.html', context=context)
-
-# def process_payment(request):
-#     '''Process form payment'''
-#     token = os.getenv("ACCESS_TOKEN")
-#     sdk = mercadopago.SDK(f"{token}")
-
-#     #return HttpResponse(request)
-#     data = json.loads(request.body)    
-
-#     payment_data = {
-#         "transaction_amount": float(data["transaction_amount"]),
-#         #"token": data["token"],
-#         #"installments": int(data["installments"]),
-#         "payment_method_id": data["payment_method_id"],
-#         "description": "Doação para o site Bibliamax",        
-#         "payer": {
-#             "email": data["payer"]["email"],
-#             "identification": {
-#                 "type": data["payer"]["identification"]["type"],
-#                 "number": data["payer"]["identification"]["number"]
-#             },            
-#         }
-#     }
-
-#     payment_response = sdk.payment().create(payment_data)
-#     payment = payment_response["response"]    
-
-#     # save payment in database
-#     order = Order.objects.create(
-#         amount = float(data["transaction_amount"]),
-#         status = payment["status"],
-#         status_detail = payment["status_detail"],
-#         payment_id = payment["id"],
-#         date_approved = datetime.fromisoformat(payment["date_approved"]),
-#         payment_method = payment["payment_method_id"],
-#         payment_type = payment["payment_type_id"]
-#     )
-#     order.generate_secret()
-#     order.save()
-#     return HttpResponseRedirect(reverse('status', args=[payment["id"]]))
-#     #return HttpResponse("OK")
-#     # response = {
-#     #     "status": "ok",
-#     #     "data": {
-#     #         "redirect": reverse('status', args=[payment["id"]]),            
-#     #     }
-#     # }
-#     # return HttpResponse(json.dumps(response), content_type='application/json')
-
-
-
-def confirm(request, order_id, order_secret):
-    '''Confirm the online payment.'''    
-    
-    order = Order.objects.get(pk=order_id)
-    if order.secret == order_secret:
-        order.paid = True
-        order.save()
-    
-    return HttpResponse("OK")
 
 def success(request):
     '''Get back order.'''
