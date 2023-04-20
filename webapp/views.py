@@ -234,7 +234,7 @@ def support(request):
             )
             # save payment in database
             order = Order.objects.create(
-                amount=request.POST["quantity"] * 30,
+                amount=float(request.POST["quantity"]) * 30,
                 status="approved",
                 date_approved=datetime.now(),
                 payment_method="credit card",
