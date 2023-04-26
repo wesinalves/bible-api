@@ -149,18 +149,16 @@ def search(request, term, book_abbr=None):
     """View function to search verses."""
 
     version_abbr = request.session.get('version', 'acf')
+    verses = VerseVersion.objects.filter(
+        version__abbreviation__iexact=version_abbr,
+        text__icontains=term
+        )
 
     if book_abbr:
-        verses = VerseVersion.objects.filter(
-            # version__abbreviation__iexact=version_abbr,
-            verse__book__abbreviation__iexact=book_abbr,
-            text__contains=term
+        verses = verses.filter(
+            verse__book__abbreviation__iexact=book_abbr,            
         )
-    else:
-        verses = VerseVersion.objects.filter(
-            version__abbreviation__iexact=version_abbr,
-            text__contains=term
-        )
+    
 
     # verses = VerseVersion.objects.filter(
     #         reduce(
