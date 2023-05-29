@@ -152,14 +152,12 @@ def search(request, term, book_abbr=None):
     verses = VerseVersion.objects.filter(
         version__abbreviation__iexact=version_abbr,
         text__icontains=term
-        )
+    )
 
     if book_abbr:
         verses = verses.filter(
-            verse__book__abbreviation__iexact=book_abbr,            
+            verse__book__abbreviation__iexact=book_abbr,
         )
-    
-
     # verses = VerseVersion.objects.filter(
     #         reduce(
     #             operator.and_, (
