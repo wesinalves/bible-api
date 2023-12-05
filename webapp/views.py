@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import Version, Book, VerseVersion, Reference, Order
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
+from openai import OpenAI
 
 
 import os
@@ -19,6 +20,11 @@ def index(request):
     context = {
         'version': version,
     }
+    if request.method == 'POST':
+        prompt = request.POST.get('prompt')
+        response = get_completion(prompt)
+        print(response)
+        return JsonResponse({'response': response})
     return render(request, 'index.html', context=context)
 
 
@@ -106,6 +112,7 @@ def verse(request, version_abbr, book_abbr, chapter_number, verse_number):
     dictionaries = verse.verse.dictionaries.all()
     inters = verse.verse.intelinears.all()
     references = Reference.objects.filter(reference=verse.verse.id)
+    image = get_image("terra sem forma e vazia")
     context = {
         'verse': verse,
         'version': version_abbr,
@@ -116,6 +123,7 @@ def verse(request, version_abbr, book_abbr, chapter_number, verse_number):
         'inters': inters,
         'chapter_number': chapter_number,
         'range_chapters': range(1, book.chapters + 1),
+        'image': image,
     }
 
     return render(request, 'verse.html', context=context)
@@ -265,3 +273,81 @@ def cancel(request):
     }
 
     return render(request, 'cancel.html', context=context)
+
+def get_completion(prompt):
+    '''Chat with the bot.'''
+    textobiblico = """
+    Salmo 119:1-20
+
+1 Bem-aventurados os irrepreensíveis no seu caminho, que andam na lei do Senhor.
+
+2 Bem-aventurados os que guardam as suas prescrições e o buscam de todo o coração.
+
+3 Eles não praticam iniquidade, mas andam nos seus caminhos.
+
+4 Tu ordenaste os teus preceitos para que sejam diligentemente observados.
+
+5 Quem dera que os meus caminhos fossem dirigidos de maneira a observar os teus estatutos!
+
+6 Então, não serei envergonhado, atentando para todos os teus mandamentos.
+
+7 Louvar-te-ei com coração sincero quando tiver aprendido os teus justos juízos.
+
+8 Observarei os teus estatutos; não me desampares inteiramente.
+
+9 Como purificará o jovem o seu caminho? Observando-o segundo a tua palavra.
+
+10 De todo o meu coração te busquei; não me deixes fugir aos teus mandamentos.
+
+11 Escondi a tua palavra no meu coração para não pecar contra ti.
+
+12 Bendito és tu, ó Senhor! Ensina-me os teus estatutos!
+
+13 Com os meus lábios repeti todos os juízos da tua boca.
+
+14 Regozijo-me mais com o caminho dos teus testemunhos do que com todas as riquezas.
+
+15 Meditarei nos teus preceitos e contemplarei os teus caminhos.
+
+16 Deleitar-me-ei nos teus estatutos; não me esquecerei da tua palavra.
+
+17 Faze bem ao teu servo para que viva, para que eu observe a tua palavra.
+
+18 Desvenda os meus olhos para que contemple os feitos maravilhosos da tua lei.
+
+19 Sou peregrino na terra, não escondas de mim os teus mandamentos.
+
+20 A minha alma consome-se de paixão e desejo por teus juízos em todo o tempo.
+"""
+
+    chatbot = OpenAI()
+    completion = chatbot.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Você é um banco de dados da bíblia da Nova Versão Internacional, você vai fornecer textos da bíblia, mas sem comentar, e qualquer pedido diferente de um texto retirado da bíblia, você enviará a mensagem 'Desculpe, mas eu só forneço textos referentes a bíblia.'"},
+            {"role": "system", "content": "Se por acaso for pedido um texto muito grande da bíblia, exemplo salmo 119, não justifique o porque não pode trazer um texto tão grande, apenas escreva o máximo que puder, e quando não puder mais, escreva um sinal de continuação no final"},
+            {"role": "system", "content": "Escreva o texto separado por versículos, e enumere cada um"},
+            {"role": "user", "content": "Apocalipse 21:1-5"},
+            {"role": "assistant", "content": "\"Vi novo céu e nova terra, pois o primeiro céu e a primeira terra passaram, e o mar já não existe. Vi a santa cidade, a nova Jerusalém, que descia do céu, da parte de Deus, preparada como uma noiva adornada para o seu marido. E ouvi uma forte voz que vinha do trono e dizia: 'Eis o tabernáculo de Deus com os homens. Deus habitará com eles. Eles serão povos de Deus e Deus mesmo estará com eles e será o seu Deus. Ele enxugará dos seus olhos toda lágrima; não haverá mais morte, nem haverá mais tristeza, nem choro, nem dor, porque as primeiras coisas já passaram'. E aquele que estava assentado no trono disse: 'Eis que faço novas todas as coisas'. E acrescentou: 'Escreve, porque estas palavras são verdadeiras e fiéis\"'. (Apocalipse 21:1-5)"},
+            {"role": "user", "content": "salmo 119 primeiros 20 versículos"},
+            {"role": "assistant", "content": textobiblico },
+            {"role": "user", "content": "Quero uma receita de bolo"},
+            {"role": "assistant", "content":"Desculpe, mas eu só forneço textos referentes a bíblia."},
+            {"role": "user", "content": prompt},
+        ]
+    )
+
+    response = completion.choices[0].message.content
+    return response
+
+def get_image(prompt):
+    dalle = OpenAI()
+    response = dalle.images.generate(
+        model="dall-e-3",
+        prompt=prompt,
+        size="1024x1024",
+        quality="standard",
+        n=1,
+    )
+    image_url = response.data[0].url
+    return image_url
