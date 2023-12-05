@@ -9,36 +9,74 @@
 
   
     <main class="px-3 text-center mt-auto">
-      <h1>Bíblia Max</h1>
-      <p class="h2">A maior referência em pesquisa bíblica na internet.</p>
-      <div class="input-group mb-3 w-50 mx-auto">
-        <input name="search_term" id="search_term" type="text" class="form-control" placeholder="O que você procura?" aria-label="Username" aria-describedby="basic-addon1">
+      <div id="response">
+        <p class="lead text-end ">
+          <span class="bg-success text-white p-3">
+            qual é o quarto mandamento?
+            
+          </span>
+        </p>
+        <p class="lead text-start bg-light p-3">
+          <span>
+          O quarto mandamento é encontrado no livro do Êxodo, capítulo 20, versículo 8-11:<br>
+          "A Bíblia diz: 'Lembra-te do dia de sábado, para o santificar. Seis dias trabalharás, e farás toda a tua obra; mas o sétimo dia é o sábado do Senhor teu Deus. Nesse dia não farás trabalho algum, nem tu, nem teu filho, nem tua filha, nem o teu servo, nem a tua serva, nem o teu animal, nem o teu estrangeiro que está dentro das tuas portas. Porque em seis dias fez o Senhor os céus e a terra, o mar e tudo o que neles há, e ao sétimo dia descansou; por isso o Senhor abençoou o dia de sábado, e o santificou.'"
+        </span>
+        </p>
       </div>
-      <a href="#" class="btn btn-lg btn-secondary fw-bold " id="search_button">Buscar</a>
-      <a href="{% url 'books' %}" class="btn btn-lg btn-secondary fw-bold ">Livros</a>                  
+      <form method="post">
+        <div class="input-group mb-3 mx-auto">
+          {% csrf_token %}
+          <input id="prompt" type="text" name="prompt" class="form-control" placeholder="Como posso te ajudar?" aria-label="Username" aria-describedby="basic-addon1">
+          <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i class="bi bi-send"></i></button>
+          
+        </div>
+      </form>
+    
+      <!--
+        <a href="#" class="btn btn-lg btn-secondary fw-bold " id="search_button">Buscar</a>
+      <a href="{% url 'books' %}" class="btn btn-lg btn-secondary fw-bold ">Livros</a>
+      -->
+                        
       
     </main>   
     
     <script type="text/javascript">
-      $("#search_term").on('keypress', function(e){
-          if(e.which === 13){
-            if(this.value.length > 3){
-              window.location="{% url 'search' 'term' %}".replace(/term/, this.value)            
-            }else{
-              window.alert('Pesquisa inválida. Por favor, insire um termo com mais de 3 letras.')
-            }
-          }
-          
-      });
-
-      $("#search_button").on('click', function(e){
-          var term = $("#search_term").val()
-          if(term.length > 3){
-             window.location="{% url 'search' 'term' %}".replace(/term/, term)            
-          }else{
-            window.alert('Pesquisa inválida. Por favor, insire um termo com mais de 3 letras.')
-          }
-      });
+      $(document).ready(function() { 
+          // Send the form on enter keypress and avoid if shift is pressed 
+          $('#prompt').keypress(function(event) { 
+              if (event.keyCode === 13 && !event.shiftKey) { 
+                  event.preventDefault(); 
+                  $('form').submit(); 
+              } 
+          }); 
+          $('form').on('submit', function(event) { 
+              event.preventDefault(); 
+          // get the CSRF token from the cookie 
+          var csrftoken = Cookies.get('csrftoken'); 
+            
+          // set the CSRF token in the AJAX headers 
+          $.ajaxSetup({ 
+              headers: { 'X-CSRFToken': csrftoken } 
+          }); 
+              // Get the prompt 
+              var prompt = $('#prompt').val(); 
+              var dateTime = new Date(); 
+              var time = dateTime.toLocaleTimeString(); 
+              // Add the prompt to the response div 
+              $('#response').append('<p class="lead text-end">('+ time + ') <span class="bg-success text-white p-3">' + prompt + '</span></p>'); 
+              // Clear the prompt 
+              $('#prompt').val(''); 
+              $.ajax({ 
+                  url: '/', 
+                  type: 'POST', 
+                  data: {prompt: prompt}, 
+                  dataType: 'json', 
+                  success: function(data) { 
+                      $('#response').append('<p class="lead text-start bg-light p-3">('+ time + ') <span>: ' + data.response + '</span></p>'); 
+                  } 
+              }); 
+          }); 
+      }); 
     </script>
 
 {% endblock content %}
