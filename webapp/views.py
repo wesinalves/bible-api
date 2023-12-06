@@ -16,7 +16,7 @@ from datetime import datetime
 
 # Create your views here.
 def index(request):
-    version = request.session.get('version', 'acf')
+    version = request.session.get('version', 'nvi')
     context = {
         'version': version,
     }
@@ -112,7 +112,7 @@ def verse(request, version_abbr, book_abbr, chapter_number, verse_number):
     dictionaries = verse.verse.dictionaries.all()
     inters = verse.verse.intelinears.all()
     references = Reference.objects.filter(reference=verse.verse.id)
-    image = get_image("terra sem forma e vazia")
+    # image = get_image("terra sem forma e vazia")
     context = {
         'verse': verse,
         'version': version_abbr,
@@ -123,7 +123,7 @@ def verse(request, version_abbr, book_abbr, chapter_number, verse_number):
         'inters': inters,
         'chapter_number': chapter_number,
         'range_chapters': range(1, book.chapters + 1),
-        'image': image,
+        #'image': image,
     }
 
     return render(request, 'verse.html', context=context)
@@ -274,6 +274,7 @@ def cancel(request):
 
     return render(request, 'cancel.html', context=context)
 
+
 def get_completion(prompt):
     '''Chat with the bot.'''
     textobiblico = """
@@ -328,17 +329,18 @@ def get_completion(prompt):
             {"role": "system", "content": "Se por acaso for pedido um texto muito grande da bíblia, exemplo salmo 119, não justifique o porque não pode trazer um texto tão grande, apenas escreva o máximo que puder, e quando não puder mais, escreva um sinal de continuação no final"},
             {"role": "system", "content": "Escreva o texto separado por versículos, e enumere cada um"},
             {"role": "user", "content": "Apocalipse 21:1-5"},
-            {"role": "assistant", "content": "\"Vi novo céu e nova terra, pois o primeiro céu e a primeira terra passaram, e o mar já não existe. Vi a santa cidade, a nova Jerusalém, que descia do céu, da parte de Deus, preparada como uma noiva adornada para o seu marido. E ouvi uma forte voz que vinha do trono e dizia: 'Eis o tabernáculo de Deus com os homens. Deus habitará com eles. Eles serão povos de Deus e Deus mesmo estará com eles e será o seu Deus. Ele enxugará dos seus olhos toda lágrima; não haverá mais morte, nem haverá mais tristeza, nem choro, nem dor, porque as primeiras coisas já passaram'. E aquele que estava assentado no trono disse: 'Eis que faço novas todas as coisas'. E acrescentou: 'Escreve, porque estas palavras são verdadeiras e fiéis\"'. (Apocalipse 21:1-5)"},
+            {"role": "assistant", "content": "Vi novo céu e nova terra, pois o primeiro céu e a primeira terra passaram, e o mar já não existe. Vi a santa cidade, a nova Jerusalém, que descia do céu, da parte de Deus, preparada como uma noiva adornada para o seu marido. E ouvi uma forte voz que vinha do trono e dizia: 'Eis o tabernáculo de Deus com os homens. Deus habitará com eles. Eles serão povos de Deus e Deus mesmo estará com eles e será o seu Deus. Ele enxugará dos seus olhos toda lágrima; não haverá mais morte, nem haverá mais tristeza, nem choro, nem dor, porque as primeiras coisas já passaram'. E aquele que estava assentado no trono disse: 'Eis que faço novas todas as coisas'. E acrescentou: 'Escreve, porque estas palavras são verdadeiras e fiéis'. (Apocalipse 21:1-5)"},
             {"role": "user", "content": "salmo 119 primeiros 20 versículos"},
-            {"role": "assistant", "content": textobiblico },
+            {"role": "assistant", "content": textobiblico},
             {"role": "user", "content": "Quero uma receita de bolo"},
-            {"role": "assistant", "content":"Desculpe, mas eu só forneço textos referentes a bíblia."},
+            {"role": "assistant", "content": "Desculpe, mas eu só forneço textos referentes a bíblia."},
             {"role": "user", "content": prompt},
         ]
     )
 
     response = completion.choices[0].message.content
     return response
+
 
 def get_image(prompt):
     dalle = OpenAI()
