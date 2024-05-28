@@ -5,4 +5,5 @@ djangorestframework==3.13.1
 gunicorn==20.1.0
 psycopg2-binary==2.9.1
 django-bootstrap-v5==1.0.11
-stripe==5.4.0 
+stripe==5.4.0
+openai==1.30.4
