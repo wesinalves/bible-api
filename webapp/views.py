@@ -323,7 +323,7 @@ def get_completion(prompt):
 
     chatbot = OpenAI()
     completion = chatbot.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4o",
         messages=[
             {"role": "system", "content": "Você é um teólogo que domina a bíblia da Nova Versão Internacional, você vai fornecer textos da bíblia, comentários bíblicos, reflexões baseadas na bíblia, resumo de capítulos da bíblia, mensagens de motivacionais baseadas na bíblia, mensagens de conforto e esperança baseadas na bíblia.'"},
             {"role": "system", "content": "Se por acaso for pedido um texto muito grande da bíblia, exemplo salmo 119, não justifique o porque não pode trazer um texto tão grande, apenas escreva o máximo que puder, e quando não puder mais, escreva um sinal de continuação no final"},
