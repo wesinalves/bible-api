@@ -123,7 +123,7 @@ def verse(request, version_abbr, book_abbr, chapter_number, verse_number):
         'inters': inters,
         'chapter_number': chapter_number,
         'range_chapters': range(1, book.chapters + 1),
-        #'image': image,
+        # 'image': image,
     }
 
     return render(request, 'verse.html', context=context)

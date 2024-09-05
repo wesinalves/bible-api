@@ -7,3 +7,4 @@ psycopg2-binary==2.9.1
 django-bootstrap-v5==1.0.11
 stripe==5.4.0
 openai==1.30.4
+flake8==7.1.1
