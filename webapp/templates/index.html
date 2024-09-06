@@ -10,6 +10,7 @@
   
     <main class="px-3 text-center mt-auto">
       <div id="response">
+        {% autoescape off %}
         <p class="lead text-end p-3">
           <span class="">
             o que fazer quando me sentir angustiado?
@@ -21,6 +22,7 @@
             Salmos 42:5 diz: "Por que você está assim tão triste, ó minha alma? Por que está assim tão perturbada dentro de mim? Ponha a sua esperança em Deus! Pois ainda o louvarei; ele é meu Salvador e meu Deus." Quando você se sentir angustiado, uma das melhores coisas que pode fazer é buscar a presença de Deus. Ore, fale com Ele sobre suas preocupações, medite em Sua Palavra e busque consolo em Suas promessas. Lembre-se de que Deus é fiel e está ao seu lado em todos os momentos. Confie Nele e coloque sua esperança em Suas promessas. Além disso, é bom buscar o apoio de pessoas próximas, como amigos ou familiares, que possam lhe oferecer conforto e suporte emocional durante esses momentos difíceis.
         </span>
         </p>
+        {% endautoescape %}
       </div>
       <form method="post">
         <div class="input-group mb-3 mx-auto">
@@ -38,7 +40,6 @@
                         
       
     </main>   
-    
     <script type="text/javascript">
       $(document).ready(function() { 
           // Send the form on enter keypress and avoid if shift is pressed 
@@ -52,7 +53,7 @@
               event.preventDefault(); 
           // get the CSRF token from the cookie 
           var csrftoken = Cookies.get('csrftoken'); 
-            
+
           // set the CSRF token in the AJAX headers 
           $.ajaxSetup({ 
               headers: { 'X-CSRFToken': csrftoken } 
@@ -71,9 +72,10 @@
                   data: {prompt: prompt}, 
                   dataType: 'json', 
                   success: function(data) { 
-                      $('#response').append('<p class="lead text-start bg-light p-3">('+ time + ') <span>: ' + data.response + '</span></p>'); 
+                    var text = marked.parse(data.response)
+                    $('#response').append('<div class="lead text-start bg-light p-3">('+ time + '): ' + text + '</div>'); 
                   } 
-              }); 
+              });
           }); 
       }); 
     </script>
