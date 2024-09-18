@@ -276,51 +276,7 @@ def cancel(request):
 
 
 def get_completion(prompt):
-    '''Chat with the bot.'''
-    textobiblico = """
-    Salmo 119:1-20
-
-1 Bem-aventurados os irrepreensíveis no seu caminho, que andam na lei do Senhor.
-
-2 Bem-aventurados os que guardam as suas prescrições e o buscam de todo o coração.
-
-3 Eles não praticam iniquidade, mas andam nos seus caminhos.
-
-4 Tu ordenaste os teus preceitos para que sejam diligentemente observados.
-
-5 Quem dera que os meus caminhos fossem dirigidos de maneira a observar os teus estatutos!
-
-6 Então, não serei envergonhado, atentando para todos os teus mandamentos.
-
-7 Louvar-te-ei com coração sincero quando tiver aprendido os teus justos juízos.
-
-8 Observarei os teus estatutos; não me desampares inteiramente.
-
-9 Como purificará o jovem o seu caminho? Observando-o segundo a tua palavra.
-
-10 De todo o meu coração te busquei; não me deixes fugir aos teus mandamentos.
-
-11 Escondi a tua palavra no meu coração para não pecar contra ti.
-
-12 Bendito és tu, ó Senhor! Ensina-me os teus estatutos!
-
-13 Com os meus lábios repeti todos os juízos da tua boca.
-
-14 Regozijo-me mais com o caminho dos teus testemunhos do que com todas as riquezas.
-
-15 Meditarei nos teus preceitos e contemplarei os teus caminhos.
-
-16 Deleitar-me-ei nos teus estatutos; não me esquecerei da tua palavra.
-
-17 Faze bem ao teu servo para que viva, para que eu observe a tua palavra.
-
-18 Desvenda os meus olhos para que contemple os feitos maravilhosos da tua lei.
-
-19 Sou peregrino na terra, não escondas de mim os teus mandamentos.
-
-20 A minha alma consome-se de paixão e desejo por teus juízos em todo o tempo.
-"""
-
+    '''Chat with the bot.'''    
     chatbot = OpenAI()
     completion = chatbot.chat.completions.create(
         model="gpt-4o",
@@ -328,10 +284,6 @@ def get_completion(prompt):
             {"role": "system", "content": "Você é um teólogo que domina a bíblia da Nova Versão Internacional, você vai fornecer textos da bíblia, comentários bíblicos, reflexões baseadas na bíblia, resumo de capítulos da bíblia, mensagens de motivacionais baseadas na bíblia, mensagens de conforto e esperança baseadas na bíblia.'"},
             {"role": "system", "content": "Se por acaso for pedido um texto muito grande da bíblia, exemplo salmo 119, não justifique o porque não pode trazer um texto tão grande, apenas escreva o máximo que puder, e quando não puder mais, escreva um sinal de continuação no final"},
             {"role": "system", "content": "Escreva o texto separado por versículos, e enumere cada um"},
-            #{"role": "user", "content": "Apocalipse 21:1-5"},
-            #{"role": "assistant", "content": "Vi novo céu e nova terra, pois o primeiro céu e a primeira terra passaram, e o mar já não existe. Vi a santa cidade, a nova Jerusalém, que descia do céu, da parte de Deus, preparada como uma noiva adornada para o seu marido. E ouvi uma forte voz que vinha do trono e dizia: 'Eis o tabernáculo de Deus com os homens. Deus habitará com eles. Eles serão povos de Deus e Deus mesmo estará com eles e será o seu Deus. Ele enxugará dos seus olhos toda lágrima; não haverá mais morte, nem haverá mais tristeza, nem choro, nem dor, porque as primeiras coisas já passaram'. E aquele que estava assentado no trono disse: 'Eis que faço novas todas as coisas'. E acrescentou: 'Escreve, porque estas palavras são verdadeiras e fiéis'. (Apocalipse 21:1-5)"},
-            #{"role": "user", "content": "salmo 119 primeiros 20 versículos"},
-            #{"role": "assistant", "content": textobiblico},
             {"role": "user", "content": prompt},
         ]
     )
