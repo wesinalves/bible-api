@@ -9,32 +9,46 @@
 
   
     <main class="px-3 text-center mt-auto">
-      <div class="d-flex flex-row mb-3 gap-2">
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Textos bíblicos</h5>
-          <p class="card-text">Pesquise pelo texto bíblico sem precisar navegar pelos livros.</p>
+      <div class="container">
+        <div class="row mb-3 g-2">
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Textos bíblicos</h5>
+                <p class="card-text">Pesquise pelo texto bíblico sem precisar navegar pelos livros.</p>
+              </div>
+            </div>
+          </div>
+      
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Comentários teológicos</h5>
+                <p class="card-text">Peça comentários aprofundados sobre um texto de difícil interpretação.</p>
+              </div>
+            </div>
+          </div>
+      
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Reflexões bíblicas</h5>
+                <p class="card-text">Peça para criar uma reflexão baseado em algum tema.</p>
+              </div>
+            </div>
+          </div>
+      
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">Conforto e esperança</h5>
+                <p class="card-text">Peça ajuda se estiver passando por uma crise.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Comentários teológicos</h5>
-          <p class="card-text">Peça comentários aprofundados sobre um texto de difícil interpretação.</p>
-        </div>
-      </div>
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Reflexões bíblicas</h5>
-          <p class="card-text">Peça para criar uma reflexão baseado em algum tema.</p>
-        </div>
-      </div>
-      <div class="card" style="width: 18rem;">
-        <div class="card-body">
-          <h5 class="card-title">Conforto e esperança</h5>
-          <p class="card-text">Peça ajuda se estiver passando por uma crise.</p>
-        </div>
-      </div>
-      </div>
+      
       <div id="response">
         {% autoescape off %}
         {% endautoescape %}
