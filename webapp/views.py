@@ -276,7 +276,7 @@ def cancel(request):
 
 
 def get_completion(prompt):
-    '''Chat with the bot.'''    
+    '''Chat with the bot.'''
     chatbot = OpenAI()
     completion = chatbot.chat.completions.create(
         model="gpt-4o",
